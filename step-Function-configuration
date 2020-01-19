@@ -1,0 +1,69 @@
+{
+  "Comment": "A State Machine to Run Transformations",
+  "StartAt": "run-transformations-athena",
+  "States": {
+    "run-transformations-athena": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:eu-west-1:386027091365:function:run-transformations-athena",
+      "Next": "check-transformations-athena"
+    },
+    "check-transformations-athena": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:eu-west-1:386027091365:function:check-transformations-athena",
+      "Next": "transformations-done?"
+    },
+    "transformations-done?": {
+      "Type": "Choice",
+      "Choices": [{
+          "Variable": "$.status",
+          "StringEquals": "SUCCEEDED",
+          "Next": "Send-SUCCEEDED-SNS"
+        },
+        {
+          "Variable": "$.status",
+          "StringEquals": "RUNNING",
+          "Next": "Wait-1-Minute"
+        },
+        {
+          "Variable": "$.status",
+          "StringEquals": "FAILED",
+          "Next": "Send-FAILED-SNS"
+        }
+      ],
+      "Default": "Send-FAILED-SNS"
+    },
+    "Wait-1-Minute": {
+      "Type": "Wait",
+      "Seconds": 60,
+      "Next": "check-transformations-athena"
+    },
+    "Send-SUCCEEDED-SNS": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "Message": {
+          "Input": "ETL-cuba-burgol-c2 was completed successfully"
+        },
+        "TopicArn": "arn:aws:sns:eu-west-1:386027091365:ETL-cuba-burgol-c2"
+      },
+      "Next": "Exacution-Succeeded"
+    },
+    "Send-FAILED-SNS": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "Message": {
+          "Input": "ETL-cuba-burgol-c2 was failed"
+        },
+        "TopicArn": "arn:aws:sns:eu-west-1:386027091365:ETL-cuba-burgol-c2"
+      },
+      "Next": "Exacution-Failed"
+    },
+    "Exacution-Succeeded": {
+      "Type": "Succeed"
+    },
+    "Exacution-Failed": {
+      "Type": "Fail"
+    }
+  }
+}
