@@ -20,7 +20,7 @@ def invoke_glue_job(job_name):
 
 def lambda_handler(event, context):
     if event['useAthena']:
-        stepfunction_arn='arn:aws:states:eu-west-1:386027091365:stateMachine:stepFunction-cuba-burgol-c2'
+        stepfunction_arn='<STEP-FUNCTION-ARN>'
         invoke_stepFunction(stepfunction_arn)
         msg='used Athena for the ETL process'
     else:
