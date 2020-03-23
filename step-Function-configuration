@@ -4,12 +4,12 @@
   "States": {
     "run-transformations-athena": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:eu-west-1:386027091365:function:run-transformations-athena",
+      "Resource": "<LAMBDA-ARN>",
       "Next": "check-transformations-athena"
     },
     "check-transformations-athena": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:eu-west-1:386027091365:function:check-transformations-athena",
+      "Resource": "<LAMBDA-ARN>",
       "Next": "transformations-done?"
     },
     "transformations-done?": {
@@ -44,7 +44,7 @@
         "Message": {
           "Input": "ETL-cuba-burgol-c2 was completed successfully"
         },
-        "TopicArn": "arn:aws:sns:eu-west-1:386027091365:ETL-cuba-burgol-c2"
+        "TopicArn": "<TOPIC-ARN>"
       },
       "Next": "Exacution-Succeeded"
     },
@@ -55,7 +55,7 @@
         "Message": {
           "Input": "ETL-cuba-burgol-c2 was failed"
         },
-        "TopicArn": "arn:aws:sns:eu-west-1:386027091365:ETL-cuba-burgol-c2"
+        "TopicArn": "<TOPIC-ARN>"
       },
       "Next": "Exacution-Failed"
     },
