@@ -3,8 +3,8 @@ import json
 
 ### init params
 client = boto3.client('athena')
-s3_bucket_name='allcloud-idan.petel-temp'
-dest_database_name='training_advanced_pipeline/transformed' 
+s3_bucket_name='<BUCKET-NAME>'
+dest_database_name='<BUCKET-FOLDER-PATH>' 
 dest_s3_output='s3://{}/{}'.format(s3_bucket_name,dest_database_name)
 
 ### quieres
