@@ -52,17 +52,17 @@ result_glue_df = DynamicFrame.fromDF(result_sparkSQL_df, glueContext, "result_gl
 glueContext.write_dynamic_frame.from_options(
     frame = result_glue_df,
     connection_type = "s3",
-    connection_options = {"path": "s3://allcloud-idan.petel-temp/training_advanced_pipeline/transformed/rideCount_Queens_per_dayOfWeek/"},
+    connection_options = {"path": "s3://<BUCKET-NAME>/training_advanced_pipeline/transformed/rideCount_Queens_per_dayOfWeek/"},
     format = "parquet")
     
 ### publish message to SNS topic
 import boto3
 import json
 
-client = boto3.client('sns', region_name='eu-west-1')
+client = boto3.client('sns', region_name='<REGION>')
 
 response = client.publish(
-    TopicArn='arn:aws:sns:eu-west-1:386027091365:ETL-cuba-burgol-c2',
+    TopicArn='<TOPIC-ARN>',
     Message="ETL-cuba-burgol-c2 was completed successfully",
     Subject='ETL-cuba-burgol-c2 - AWS Glue',
     MessageStructure='string',
